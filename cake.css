@@ -1,0 +1,66 @@
+/* ===== Birthday cake page ===== */
+#cake{position:relative;padding-top:4.2rem}
+.cakestage{position:relative;width:min(100%,430px);display:flex;flex-direction:column;align-items:center}
+.cs-lights{width:100%;height:auto;margin-bottom:-6px;overflow:visible}
+.bg{opacity:.6;animation:twk 3s ease-in-out infinite}
+.bg.g1{animation-delay:-1s}.bg.g2{animation-delay:-2s}
+.bulb{fill:#ffe9b0}
+.cakestage.lit .bg{opacity:1;animation-name:twk2}
+@keyframes twk{50%{opacity:.3}}
+@keyframes twk2{50%{opacity:.75}}
+.cs-bunting{width:100%;height:auto;overflow:visible;margin-bottom:-14px}
+.cs-bunting .cs-row{transform-box:fill-box;transform-origin:50% 0;animation:swayr 5s ease-in-out infinite}
+.cs-bunting .r2{animation-delay:-2s}
+@keyframes swayr{50%{transform:skewX(2.5deg)}}
+.cs{width:100%;height:auto;overflow:visible;position:relative;z-index:1}
+.cs text{fill:#263F60}
+.cs-bln{position:absolute;width:46px;height:58px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--c);opacity:.85;animation:bob 6s ease-in-out infinite;pointer-events:none;box-shadow:inset -6px -8px 10px rgba(0,0,0,.1);z-index:0}
+.cs-bln::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:72px;background:rgba(131,153,179,.7)}
+.cs-bln::before{content:"";position:absolute;left:14px;top:9px;width:9px;height:14px;border-radius:50%;background:rgba(255,255,255,.4);rotate:20deg}
+.b0{left:-6%;top:30%}.b1{left:2%;top:50%;animation-delay:-2s}.b2{right:-6%;top:34%;animation-delay:-1s}.b3{right:2%;top:54%;animation-delay:-3.5s}
+@keyframes bob{50%{transform:translateY(-18px) rotate(3deg)}}
+/* candles and flames */
+.cflame,.cglow{opacity:0;transform-box:fill-box;transform-origin:50% 100%;transition:opacity .5s,transform .5s}
+.cglow{transform-origin:50% 50%}
+.candle.on .cflame{opacity:1;animation:flick .45s ease-in-out infinite alternate}
+.candle.on .cglow{opacity:.9;animation:glowp 1.6s ease-in-out infinite alternate}
+.candle.out .cflame{opacity:0;transform:scale(.2)}
+@keyframes flick{from{transform:scale(1) rotate(-3deg)}to{transform:scale(.88,1.12) rotate(3deg)}}
+@keyframes glowp{from{opacity:.7}to{opacity:1}}
+#cake>*{position:relative;z-index:1}
+#cake>#cakeDim{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s;background:radial-gradient(circle at var(--fx,50%) var(--fy,40%),rgba(8,16,30,.05) 0,rgba(8,16,30,.1) 130px,rgba(8,16,30,.55) 440px)}
+.cakestage.lit .cs-bunting,.cakestage.lit .cs-bln,.cakestage.lit .cs-lights{filter:brightness(.62)}
+.cs{-webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+#cakeDim.on{opacity:1}
+/* steps and lyrics */
+.cs-steps{list-style:none;padding:0;display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap;font:500 .62rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
+.cs-steps li{display:flex;align-items:center;gap:.4rem}
+.cs-steps li::before{content:"";width:9px;height:9px;border-radius:50%;border:1.5px solid var(--sky);transition:.3s}
+.cs-steps li:not(:last-child)::after{content:"";width:16px;height:1px;background:var(--sky);opacity:.5;margin-left:.1rem}
+.cs-steps li.done::before{background:var(--sky)}
+.cs-steps li.cur{color:var(--navy)}
+body.night .cs-steps li.cur{color:var(--ivory)}
+.cs-steps li.cur::before{background:var(--sky);box-shadow:0 0 0 4px rgba(120,151,187,.3)}
+.lyrics{min-height:0;max-height:0;overflow:hidden;opacity:0;transition:max-height .6s,opacity .6s;font-family:var(--serif);font-style:italic;text-align:center;line-height:1.8}
+.lyrics.on{max-height:9rem;opacity:1}
+.lyl{margin:0;font-size:.95rem}
+.lys{color:var(--gray);transition:color .25s,text-shadow .25s}
+.lys.on{color:var(--navy);text-shadow:0 0 12px rgba(255,214,140,.9)}
+body.night .lys.on,#cakeDim.on ~ main .lys.on{color:var(--ivory)}
+.confetti{position:fixed;top:-14px;z-index:52;width:7px;height:12px;pointer-events:none}
+@media(max-width:520px){.b1,.b3{display:none}#cake{padding-top:3.6rem}}
+
+/* readable controls in the dimmed room and at night */
+#cake.room .btn:not(.ghost),body.night #cake .btn:not(.ghost){background:var(--ivory);color:var(--navy);border-color:var(--ivory)}
+#cake.room .btn.ghost,body.night #cake .btn.ghost{color:var(--ivory);border-color:rgba(255,254,250,.7)}
+#cake.room .msg,#cake.room .cs-steps li.cur,#cake.room .lys.on,#cake.room .fine,#cake.room .eyebrow,#cake.room h2{color:var(--ivory)}
+#cake.room .lys{color:#aebfd6}
+#cake.room .lys.on{color:#fff}
+
+/* 3D cake canvas */
+.cs3d{width:100%;aspect-ratio:1/1.12;display:block;touch-action:pan-y;cursor:grab;position:relative;z-index:1;outline-offset:4px}
+.cs3d.grab{cursor:grabbing}
+.cs-tools{display:flex;gap:.7rem;align-items:center;justify-content:center;margin-top:.1rem}
+.cs-tools[hidden],.cs-tools .tiny[hidden]{display:none}
+.cs-tools .mini{font:500 .62rem var(--sans);letter-spacing:.1em;text-transform:uppercase;background:none;border:1px solid var(--sky);color:inherit;border-radius:50px;padding:.35rem .8rem;cursor:pointer}
+.cs-tools .mini:hover{background:var(--sky);color:var(--ivory)}

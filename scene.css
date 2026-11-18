@@ -1,0 +1,119 @@
+/* ===== Scene: layered landscape, fireflies, aurora, birds, paper grain, light ===== */
+:root{--h1:#bcd0e6;--h2:#98b4d4;--h3:#7897BB}
+body[data-tod="dawn"]{--h1:#c9b5cf;--h2:#a897be;--h3:#7a76a4}
+body[data-tod="morning"]{--h1:#bcd0e6;--h2:#98b4d4;--h3:#7897BB}
+body[data-tod="midday"]{--h1:#c8dcef;--h2:#a5c0dc;--h3:#86a6c9}
+body[data-tod="afternoon"]{--h1:#dccfb8;--h2:#b8b6b6;--h3:#8e9aae}
+body[data-tod="sunset"]{--h1:#eba88f;--h2:#cf8f98;--h3:#a07c9a}
+body[data-tod="dusk"]{--h1:#5a4a7a;--h2:#44457a;--h3:#2d3f6b}
+body[data-tod="night"]{--h1:#2c4468;--h2:#213a5c;--h3:#172c48}
+body.night:not([data-tod="dusk"]){--h1:#2c4468;--h2:#213a5c;--h3:#172c48}
+
+#scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#scene .hills{position:absolute;left:0;right:0;bottom:0;width:100%;height:42vh;min-height:230px;display:block}
+#scene .hills path{transition:fill 2s}
+.L1 path{fill:var(--h1);opacity:.8}
+.L2 path{fill:var(--h2);opacity:.92}
+.L3 path{fill:var(--h3)}
+.tree{fill:color-mix(in srgb,var(--h2) 62%,#0b1626)}
+.L1{transform:translateX(calc(var(--px,0)*-10px))}
+.L2{transform:translateX(calc(var(--px,0)*-18px))}
+.L3{transform:translateX(calc(var(--px,0)*-30px))}
+.cabin .wall{fill:color-mix(in srgb,var(--h3) 55%,#0b1626)}
+.cabin .roof{fill:color-mix(in srgb,var(--h3) 40%,#0b1626)}
+.win{fill:rgba(255,255,255,.4);transition:fill 2s}
+body[data-tod="sunset"] .win{fill:#ffd9a0}
+body.night .win{fill:#ffe08a;filter:drop-shadow(0 0 7px rgba(255,210,120,.95))}
+.smoke circle{fill:rgba(255,255,255,.35);animation:smokeUp 6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.smoke circle:nth-child(2){animation-delay:-2s}.smoke circle:nth-child(3){animation-delay:-4s}
+@keyframes smokeUp{0%{opacity:.5;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(14px,-46px) scale(2.2)}}
+
+/* fireflies: a few soft dots, one animation each, only rendered at dusk and night */
+.ffs{position:absolute;inset:50% 0 0 0;display:none}
+body.night .ffs,body[data-tod="dusk"] .ffs{display:block;animation:auin 2.5s both}
+.ff{position:absolute;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#fff6cc 0,#ffe08a 28%,rgba(255,214,120,.35) 48%,rgba(255,214,120,0) 70%);will-change:transform,opacity;animation:ffly var(--d,14s) ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes ffly{0%,100%{transform:translate(0,0);opacity:.1}20%{transform:translate(26px,-18px);opacity:1}45%{transform:translate(-10px,-34px);opacity:.25}70%{transform:translate(-30px,-10px);opacity:.95}}
+@keyframes auin{from{opacity:0}}
+
+/* aurora: soft gradients moved with transform only (no blur filter, no blend mode) */
+.aurora{position:absolute;inset:0 0 38% 0;display:none;overflow:hidden;opacity:.6}
+body[data-tod="night"] .aurora{display:block;animation:auin 3s both}
+body.night[data-tod="dusk"] .aurora{display:block;opacity:.22;animation:auin 3s both}
+.aurora i{position:absolute;left:-25%;right:-25%;height:36%;border-radius:50%;will-change:transform;animation:aur 16s ease-in-out infinite alternate}
+.aurora i:nth-child(1){top:2%;background:radial-gradient(ellipse at 50% 50%,rgba(120,200,190,.32),rgba(120,200,190,.12) 45%,transparent 70%)}
+.aurora i:nth-child(2){top:14%;background:radial-gradient(ellipse at 50% 50%,rgba(120,151,230,.3),rgba(120,151,230,.12) 45%,transparent 70%);animation-delay:-5s}
+.aurora i:nth-child(3){top:25%;background:radial-gradient(ellipse at 50% 50%,rgba(185,140,225,.26),rgba(185,140,225,.1) 45%,transparent 70%);animation-delay:-9s}
+@keyframes aur{from{transform:translateX(-6%) scaleY(.8) rotate(-4deg)}to{transform:translateX(6%) scaleY(1.15) rotate(3deg)}}
+
+/* birds: only by day */
+.birds{position:absolute;inset:0;display:none;opacity:.8}
+body[data-tod="morning"] .birds,body[data-tod="midday"] .birds,body[data-tod="afternoon"] .birds{display:block}
+body[data-tod="sunset"] .birds,body[data-tod="dawn"] .birds{display:block;opacity:.55}
+.bird{position:absolute;left:-60px;width:24px;height:8px;animation:fly var(--d,26s) linear infinite;animation-delay:var(--dl,0s)}
+.bird svg{width:100%;height:100%;overflow:visible}
+.bird path{fill:none;stroke:var(--navy);stroke-width:1.4;stroke-linecap:round}
+@keyframes fly{0%{transform:translate(0,0)}50%{transform:translate(55vw,-26px)}100%{transform:translate(115vw,10px)}}
+
+/* paper grain + vignette + soft light that follows the cursor */
+body::before{content:"";position:fixed;inset:0;z-index:6;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 58%,rgba(8,18,34,.22) 100%)}
+body::after{content:"";position:fixed;inset:0;z-index:6;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .7 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#glow{position:fixed;left:0;top:0;width:340px;height:340px;margin:-170px 0 0 -170px;z-index:6;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(255,236,190,.2),transparent 65%);opacity:0;transition:opacity .6s}
+#glow.on{opacity:1}
+body:not(.night) #glow{background:radial-gradient(circle,rgba(255,226,170,.22),transparent 65%)}
+
+/* heading ornament and glass cards */
+.page h2::after{content:"";display:block;width:110px;height:11px;margin:.8rem auto 0;background:radial-gradient(circle,var(--sky) 2.2px,transparent 3px) center/11px 11px no-repeat,linear-gradient(90deg,transparent,var(--sky) 30%,var(--sky) 70%,transparent) center/100% 1px no-repeat;opacity:.8}
+.ncard,.lifebox,.mixer{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+
+/* halo of text around the home photo */
+#home{isolation:isolate}
+.halo{position:absolute;left:50%;width:min(100vw,470px);aspect-ratio:1;translate:-50% -50%;z-index:-1;pointer-events:none;overflow:visible;animation:spin 180s linear infinite;color:var(--sky);opacity:.8}
+.halo text{font:500 12.5px var(--sans);fill:currentColor;letter-spacing:.2em}
+.halo .hr{fill:none;stroke:currentColor;stroke-width:.8;stroke-dasharray:2 7;opacity:.7}
+.halo .hs{fill:currentColor}
+
+/* time slider in the mixer */
+.timerow{display:flex;align-items:center;gap:.5rem;padding:.2rem 0}
+.timerow span{flex:0 0 auto;font-size:.72rem}
+.timerow input{flex:1;accent-color:var(--sky);min-width:0}
+
+/* respect comfort settings */
+[data-hc] #scene,[data-hc] #glow,[data-hc] .halo,[data-hc] body::before,[data-hc] body::after{display:none}
+[data-calm] .aurora i,[data-calm] .ff,[data-calm] .bird,[data-calm] .halo{animation:none}
+@media print{#scene,#glow,.halo,body::before,body::after{display:none}}
+
+/* polish found in browser tests */
+.tree{fill:color-mix(in srgb,var(--h2) 42%,#0b1626)}
+.halo{width:min(100vw,440px);opacity:.65}
+#mixBtn,#themeBtn,#musicBtn{color:var(--navy)}
+
+/* readability: lighter silhouettes by day so text stays legible over the hills */
+.tree{fill:color-mix(in srgb,var(--h2) 80%,var(--h3))}
+body.night .tree{fill:color-mix(in srgb,var(--h2) 42%,#0b1626)}
+body[data-tod="dawn"]{--h3:#a49fc4}
+body[data-tod="morning"]{--h3:#8fadcd}
+body[data-tod="midday"]{--h3:#9ab7d6}
+body[data-tod="afternoon"]{--h3:#a3b2c6}
+body[data-tod="sunset"]{--h3:#b88fa8}
+body:not(.night) .stats,body:not(.night) .whisper{text-shadow:0 0 10px rgba(255,254,250,.55)}
+@media(max-width:600px){#scene .hills{height:32vh}}
+
+body.night .cloud{opacity:.07!important}
+body.night .birds{display:none!important}
+body:not(.night) .whisper{color:#4a6a95}
+
+
+/* performance mode switch in the mixer */
+.seg{display:flex;gap:.3rem;flex:1;justify-content:flex-end}
+.seg .mini[aria-pressed="true"]{background:var(--sky);color:var(--ivory)}
+
+/* LITE mode: switched on automatically on slow devices (or by hand in the mixer). Same site, lighter effects. */
+[data-perf="lite"] .aurora,[data-perf="lite"] .ffs,[data-perf="lite"] .birds,[data-perf="lite"] #glow,[data-perf="lite"] .halo,
+[data-perf="lite"] .stardrift,[data-perf="lite"] .pawtrail,[data-perf="lite"] .comet,[data-perf="lite"] .pm{display:none!important}
+[data-perf="lite"] body::before,[data-perf="lite"] body::after{display:none}
+[data-perf="lite"] *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+[data-perf="lite"] .cloud{filter:none;animation:none;opacity:.3}
+[data-perf="lite"] .deco,[data-perf="lite"] .sticker,[data-perf="lite"] .cs-bln,[data-perf="lite"] .sun,[data-perf="lite"] .smoke circle,
+[data-perf="lite"] .bg,[data-perf="lite"] .cs-row,[data-perf="lite"] .whisper,[data-perf="lite"] .gring{animation:none!important}
+[data-perf="lite"] .L1,[data-perf="lite"] .L2,[data-perf="lite"] .L3{transform:none}
+[data-perf="lite"] .cs{-webkit-mask-image:none;mask-image:none}

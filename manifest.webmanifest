@@ -1,0 +1,11 @@
+{
+  "name": "Happy Birthday, Natan!",
+  "short_name": "Natan",
+  "description": "A little universe, made for Natan.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#263F60",
+  "theme_color": "#263F60",
+  "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

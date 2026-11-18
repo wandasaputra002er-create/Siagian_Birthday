@@ -1,0 +1,45 @@
+/* ===== CSS 3D: memories ring, 3D universe, depth on the home page ===== */
+
+/* ---------- home: depth layers that tilt with the pointer or the phone ---------- */
+#home{transform-style:preserve-3d;transform:perspective(1100px) rotateX(var(--hy,0deg)) rotateY(var(--hx,0deg))}
+#home .hero{translate:0 0 70px}
+#home .eyebrow,#home h1{translate:0 0 40px}
+#home .date,#home .sub{translate:0 0 26px}
+#home .lead,#home .whisper,#home .stats,#home .row{translate:0 0 16px}
+#home .halo{translate:-50% -50% -70px}
+#home .vine{translate:0 0 -50px}
+#home .pawtrail{translate:0 0 -30px}
+#home .deco{transform:translate(calc(var(--px,0)*16px),calc(var(--py,0)*16px)) translateZ(-40px)}
+.tiltbtn{align-self:center}
+
+/* ---------- memories: a ring of photographs you can turn ---------- */
+.ringwrap{width:100%;position:relative}
+.ringwrap.ring3d{perspective:1100px;height:clamp(330px,92vw,400px);margin-top:.6rem;touch-action:pan-y;cursor:grab}
+.ringwrap.ring3d.drag{cursor:grabbing}
+.ringwrap.ring3d #grid{position:absolute;inset:0;display:block;margin:0;transform-style:preserve-3d}
+.ringwrap.ring3d .flip{position:absolute;left:50%;top:50%;width:min(190px,52vw);margin:calc(min(190px,52vw) * -.65) 0 0 calc(min(190px,52vw) / -2);rotate:0deg;backface-visibility:visible;transition:opacity .25s}
+.ringwrap.ring3d .flip:hover,.ringwrap.ring3d .flip:focus-within{rotate:0deg}
+.ringwrap.ring3d .flip.front{scale:1.05}
+.ringwrap.ring3d::after{content:"";position:absolute;left:12%;right:12%;bottom:-4px;height:34px;background:radial-gradient(ellipse at center,rgba(38,63,96,.32),transparent 70%);pointer-events:none}
+.ringnav{position:absolute;top:50%;z-index:30;width:40px;height:40px;margin-top:-20px;border-radius:50%;border:1.5px solid var(--sky);background:var(--ivory);color:var(--navy);font-size:1.3rem;line-height:1;cursor:pointer;box-shadow:0 4px 12px rgba(38,63,96,.25)}
+.ringnav.l{left:-2px}.ringnav.r{right:-2px}
+.ringnav:hover{background:var(--sky);color:var(--ivory)}
+.ringwrap:not(.ring3d) .ringnav{display:none}
+
+/* ---------- universe: a tilted solar system you can turn ---------- */
+.orrery{perspective:900px;touch-action:pan-y;cursor:grab}
+.orr3d{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(var(--tilt,58deg)) rotateZ(var(--rz,20deg))}
+.orr3d .ring{animation-name:orb}
+.orr3d .planet{animation-name:pcb;animation-direction:normal;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.5),rgba(255,255,255,0) 42%),radial-gradient(circle at 70% 78%,rgba(0,0,0,.38),rgba(0,0,0,0) 62%),var(--c)}
+.orr3d .ring.r .planet{animation-direction:reverse}
+.orr3d .sun{transform:rotateZ(calc(var(--rz,20deg) * -1)) rotateX(calc(var(--tilt,58deg) * -1));background:radial-gradient(circle at 34% 30%,#fff,#FFFEFA 45%,#d9e6f5)}
+@keyframes orb{to{transform:rotateZ(360deg)}}
+@keyframes pcb{from{transform:rotateZ(calc(var(--rz,20deg) * -1)) rotateX(calc(var(--tilt,58deg) * -1))}to{transform:rotateZ(calc(-360deg - var(--rz,20deg))) rotateX(calc(var(--tilt,58deg) * -1))}}
+.orr3d .ring{border-color:rgba(131,153,179,.7);box-shadow:0 0 18px rgba(120,151,187,.12)}
+[data-perf="lite"] .orr3d .ring{box-shadow:none}
+
+/* rings must keep their 3D context so the planets can face the camera */
+.orr3d .ring{transform-style:preserve-3d}
+
+.orrery,.ringwrap.ring3d{-webkit-user-select:none;user-select:none}
+.ringwrap.ring3d [contenteditable]{-webkit-user-select:text;user-select:text}
